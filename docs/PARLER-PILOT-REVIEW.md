@@ -50,3 +50,7 @@ Esos fixtures no son datos de producción ni evidencia de aprobación. No se cam
 ## Formas excluidas
 
 No se añaden `passé simple`, `passé antérieur`, `subjonctif imparfait`, formas pasivas ni la construcción pronominal a la selección COQ de 13 formas. Aunque la fuente documenta tiempos adicionales, quedan fuera del alcance v1 acordado.
+
+## Registro declarativo LR-041
+
+`LR-041` registra `parler` como decisión de metadatos del lema dentro de la cola de revisión. `forms_review_status` permanece en `pending` y `approved_for_production` es `false`. La decisión conserva evidencia de consulta puntual de la Académie française, pero no incorpora una tabla copiada en masa, no crea un `VerbRecord`, no cambia el estado de `first_er_regular` y no desbloquea la API de producción. Las pruebas de regresión usan registros sintéticos; prueban el comportamiento del código, no constituyen por sí solas aprobación lingüística de las 13 formas.

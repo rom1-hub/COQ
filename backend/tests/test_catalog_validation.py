@@ -73,7 +73,7 @@ def test_linguistic_owner_lemma_decision_uses_one_pronominal_spelling_and_is_not
     result = validate_catalog(ROOT / "data" / "catalogs")
     decisions = jsonl_objects(ROOT / "data" / "catalogs" / "lemma-review-decisions.jsonl")
 
-    assert len(decisions) == 3
+    assert len(decisions) == 4
     decision = next(item for item in decisions if item["decision_id"] == "LR-038")
     assert decision["canonical_infinitive"] == "entrehaïr"
     assert decision["display_infinitive"] == "s'entrehaïr"
@@ -83,7 +83,7 @@ def test_linguistic_owner_lemma_decision_uses_one_pronominal_spelling_and_is_not
     assert decision["approved_for_production"] is False
     assert result["valid"] is True
     assert result["ready_for_production"] is False
-    assert result["lemma_review_decision_count"] == 3
+    assert result["lemma_review_decision_count"] == 4
 
 
 
@@ -192,6 +192,12 @@ def test_editorial_observation_needs_no_imported_source_candidate_but_related_le
             suggested_groups=[VerbGroup.FIRST],
             source_commit=CANDIDATE_SOURCE_COMMIT,
         ),
+        CandidateInfinitiveRecord(
+            candidate_id=candidate_id_for("parler"),
+            candidate_form="parler",
+            suggested_groups=[VerbGroup.FIRST],
+            source_commit=CANDIDATE_SOURCE_COMMIT,
+        ),
     ]
     candidate_path = catalog_dir / "candidate-infinitives.jsonl"
     candidate_path.write_text(
@@ -211,7 +217,7 @@ def test_editorial_observation_needs_no_imported_source_candidate_but_related_le
     result = validate_catalog(catalog_dir)
 
     assert result["valid"] is True, result["errors"]
-    assert result["lemma_review_decision_count"] == 3
+    assert result["lemma_review_decision_count"] == 4
     assert result["ready_for_production"] is False
 
 
