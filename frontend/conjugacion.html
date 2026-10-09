@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Consulta y práctica de conjugación francesa en COQ.">
+  <title>COQ · Conjugación</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./conjugacion.html" aria-label="COQ, módulo de conjugación">
+      <span class="brand-mark" aria-hidden="true">C</span>
+      <span><strong>COQ</strong><small>FRANÇAIS</small></span>
+    </a>
+    <span class="version-label">Proyecto nuevo · interfaz v0.3</span>
+  </header>
+
+  <main class="container">
+    <section class="intro">
+      <p class="eyebrow">FRANÇAIS · CONJUGAISON</p>
+      <h1>La conjugación,<br><span>con reglas claras.</span></h1>
+      <p class="lead">Consulta y practica la conjugación francesa: 11 tiempos y modos, participe présent y gérondif présent. Los controles de esta pantalla ya son interactivos; el catálogo y el motor lingüístico de Python son la siguiente fase.</p>
+      <div class="status-note" role="status">
+        <span class="status-dot" aria-hidden="true"></span>
+        Interfaz interactiva · motor de conjugación pendiente
+      </div>
+    </section>
+
+    <section class="workspace" aria-labelledby="workspace-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">ESPACE DE TRAVAIL</p>
+          <h2 id="workspace-title">Conjugaison</h2>
+        </div>
+        <button id="reset-all" class="button button-secondary" type="button">Reiniciar</button>
+      </div>
+
+      <div class="mode-switch" role="tablist" aria-label="Modo de conjugación">
+        <button id="tab-lookup" class="mode-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="panel" data-mode="lookup">Ver conjugación</button>
+        <button id="tab-practice" class="mode-tab" type="button" role="tab" aria-selected="false" aria-controls="panel" data-mode="practice">Practicar</button>
+      </div>
+
+      <div id="panel" class="panel" role="tabpanel" aria-labelledby="tab-lookup">
+        <form id="search-form" novalidate>
+          <div class="field field-wide">
+            <label for="verb-search">Verbo</label>
+            <input id="verb-search" name="verb" type="search" autocomplete="off" placeholder="Escribe un infinitivo, por ejemplo parler" aria-describedby="verb-help">
+            <small id="verb-help">Consulta: introduce el infinitivo. Práctica: puedes elegir un verbo concreto o definir un conjunto con los filtros.</small>
+          </div>
+
+          <div class="filters-grid">
+            <div class="field">
+              <label for="tense">Tiempo o forma verbal</label>
+              <select id="tense" name="tense">
+                <option value="">Todos los tiempos y formas</option>
+                <optgroup label="Formas simples">
+                  <option value="present_indicatif">Présent de l'indicatif</option>
+                  <option value="imperatif_present">Impératif présent</option>
+                  <option value="imparfait">Imparfait</option>
+                  <option value="conditionnel_present">Conditionnel présent</option>
+                  <option value="futur_simple">Futur simple</option>
+                  <option value="subjonctif_present">Subjonctif présent</option>
+                </optgroup>
+                <optgroup label="Formas compuestas">
+                  <option value="passe_compose">Passé composé</option>
+                  <option value="plus_que_parfait">Plus-que-parfait</option>
+                  <option value="conditionnel_passe">Conditionnel passé</option>
+                  <option value="futur_anterieur">Futur antérieur</option>
+                  <option value="subjonctif_passe">Subjonctif passé</option>
+                </optgroup>
+                <optgroup label="Formas no personales">
+                  <option value="participe_present">Participe présent</option>
+                  <option value="gerondif_present">Gérondif présent</option>
+                </optgroup>
+              </select>
+            </div>
+            <div class="field">
+              <label for="group">Grupo o familia verbal</label>
+              <select id="group" name="group">
+                <option value="">Todos los grupos</option>
+                <option value="1">Premier groupe</option>
+                <option value="2">Deuxième groupe</option>
+                <option value="3">Troisième groupe</option>
+                <option value="family">Familia morfológica</option>
+              </select>
+            </div>
+            <div id="family-field" class="field field-full" hidden>
+              <label for="family">Familia morfológica</label>
+              <select id="family" name="family" disabled>
+                <option value="">Selecciona una familia</option>
+                <option value="ger">-GER</option>
+                <option value="cer">-CER</option>
+                <option value="eler">-ELER</option>
+                <option value="eter">-ETER</option>
+                <option value="yer">-YER</option>
+                <option value="e_grave">E/È + consonante + -ER</option>
+                <option value="ir_second">-IR del segundo grupo (-issant)</option>
+                <option value="ir_third">-IR del tercer grupo</option>
+                <option value="dre">-DRE</option>
+                <option value="eindre_aindre_oindre">-EINDRE / -AINDRE / -OINDRE</option>
+                <option value="uire">-UIRE</option>
+                <option value="other_irregular">Otros patrones irregulares</option>
+              </select>
+              <small>Lista inicial de familias; se ampliará y auditará con el catálogo.</small>
+            </div>
+            <div class="field">
+              <label for="construction">Construcción</label>
+              <select id="construction" name="construction">
+                <option value="">Todas las construcciones</option>
+                <option value="non_pronominal">No pronominal</option>
+                <option value="pronominal">Pronominal</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="auxiliary">Verbo auxiliar</label>
+              <select id="auxiliary" name="auxiliary">
+                <option value="">Todos los auxiliares</option>
+                <option value="avoir">AVOIR</option>
+                <option value="etre">ÊTRE</option>
+              </select>
+              <small id="auxiliary-help">El filtro de auxiliar se aplica a los tiempos compuestos.</small>
+            </div>
+          </div>
+
+          <div class="form-footer">
+            <p id="mode-hint" class="helper-text">Consulta: introduce un verbo para preparar la búsqueda.</p>
+            <button class="button button-primary" type="submit" id="submit-search">Consultar conjugación</button>
+          </div>
+        </form>
+
+        <section id="feedback" class="feedback" role="status" aria-live="polite" hidden>
+          <div class="feedback-heading">
+            <strong id="feedback-title">Solicitud preparada</strong>
+            <span id="feedback-kind" class="feedback-kind">Consulta</span>
+          </div>
+          <p id="feedback-body"></p>
+          <dl id="selection-summary" class="selection-summary" hidden></dl>
+        </section>
+      </div>
+    </section>
+
+    <section class="principles" aria-labelledby="principles-title">
+      <p class="eyebrow">PRINCIPIOS DEL PROYECTO</p>
+      <h2 id="principles-title">Primero, la regla. Después, el código.</h2>
+      <div class="principle-grid">
+        <article><span class="principle-number">01</span><h3>Una fuente de verdad</h3><p>Las reglas lingüísticas se definirán en contratos explícitos y se implementarán en Python.</p></article>
+        <article><span class="principle-number">02</span><h3>Datos verificables</h3><p>Las formas dudosas se revisan; las formas inexistentes no se inventan.</p></article>
+        <article><span class="principle-number">03</span><h3>Pruebas de regresión</h3><p>Las decisiones lingüísticas aprobadas quedarán protegidas por casos automáticos.</p></article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>COQ · Módulo de conjugación</span>
+    <a href="https://github.com/rom1-hub" rel="noopener noreferrer">GitHub</a>
+  </footer>
+</body>
+</html>

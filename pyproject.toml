@@ -1,0 +1,10 @@
+[project]
+name = "coq"
+version = "0.1.0"
+description = "Nueva arquitectura independiente para la conjugación francesa de COQ"
+requires-python = ">=3.12"
+
+[tool.pytest.ini_options]
+testpaths = ["backend/tests"]
+pythonpath = ["backend"]
+addopts = "-q"
