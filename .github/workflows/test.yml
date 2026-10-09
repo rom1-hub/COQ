@@ -32,6 +32,7 @@ jobs:
           test -f frontend/conjugacion.html
           test ! -f frontend/index.html
           test -f frontend/app.js
+          test -f frontend/verb-profiles.demo.json
           test -f docs/QUESTIONNAIRE-LINGUISTIQUE.md
           test -f docs/CONTRATS-LINGUISTIQUES.md
           grep -q 'value="participe_present"' frontend/conjugacion.html

@@ -78,16 +78,36 @@ def test_lookup_and_practice_use_independent_forms_and_controls():
     assert 'currentPracticeSummary()' in script
 
 
-def test_practice_scope_lists_groups_and_morphological_families_directly():
+def test_practice_scope_matches_the_approved_group_and_family_hierarchy():
     frontend = ROOT / "frontend"
     html = (frontend / "conjugacion.html").read_text(encoding="utf-8")
-    for value in (
-        "family:ger", "family:cer", "family:eler", "family:eter", "family:yer",
-        "family:e_grave", "family:ir_second", "family:ir_third", "family:dre",
-        "family:eindre_aindre_oindre", "family:uire", "family:other_irregular",
-    ):
-        assert f'value="{value}"' in html
-    assert 'label="Familias morfológicas"' in html
+    expected_options = (
+        ('', 'Todos los grupos y familias'),
+        ('group:1', 'Primer grupo'),
+        ('family:first_regular', '— Verbos regulares'),
+        ('family:ger', '— GER'),
+        ('family:cer', '— CER'),
+        ('family:eler', '— ELER'),
+        ('family:eter', '— ETER'),
+        ('family:yer', '— YER'),
+        ('family:e_grave', '— E(É) + consonne + ER'),
+        ('group:2', 'Segundo grupo'),
+        ('group:3', 'Tercer grupo'),
+        ('family:third_ir', '— IR'),
+        ('family:dre', '— DRE'),
+        ('family:indre_aindre_oindre', '— AINDRE, -EINDRE, -OINDRE'),
+        ('family:uire', '— UIRE'),
+        ('family:oir_oire', '— OIR, -OIRE'),
+        ('family:common_100', '— 100 verbos más comunes (por definir)'),
+        ('family:other_third_group', '— Otras familias (por definir)'),
+    )
+    positions = []
+    for value, label in expected_options:
+        token = f'<option value="{value}">{label}</option>'
+        assert token in html, f'Missing selector option: {token}'
+        positions.append(html.index(token))
+    assert positions == sorted(positions), "Group/family options are not in the approved order"
+    assert 'label="Grupos verbales"' in html
     assert 'id="practice-scope"' in html
     assert 'id="family-field"' not in html
 
@@ -111,5 +131,14 @@ def test_demo_profile_locks_only_non_tense_filters_for_parler():
 
 
 def test_github_pages_copies_the_ui_profile_fixture():
+    frontend = ROOT / "frontend"
+    profile_path = frontend / "verb-profiles.demo.json"
     workflow = (ROOT / ".github" / "workflows" / "pages.yml").read_text(encoding="utf-8")
+    checks = (ROOT / ".github" / "workflows" / "test.yml").read_text(encoding="utf-8")
+    assert profile_path.is_file(), "The demo profile must be committed alongside app.js"
+    import json
+    profiles = json.loads(profile_path.read_text(encoding="utf-8"))
+    assert profiles["_meta"]["authoritative"] is False
+    assert profiles["profiles"]["parler"]["scope"] == "group:1"
     assert "frontend/verb-profiles.demo.json" in workflow
+    assert "test -f frontend/verb-profiles.demo.json" in checks

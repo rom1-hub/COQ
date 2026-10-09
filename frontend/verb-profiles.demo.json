@@ -1,0 +1,15 @@
+{
+  "_meta": {
+    "purpose": "Fixture de interfaz, no catálogo lingüístico de producción",
+    "authoritative": false,
+    "note": "Solo demuestra el comportamiento de los filtros para parler. Sustituir por perfiles del catálogo aprobado y la API antes de dar por completo el módulo."
+  },
+  "profiles": {
+    "parler": {
+      "label": "parler · premier groupe · no pronominal · auxiliaire AVOIR",
+      "scope": "group:1",
+      "construction": "non_pronominal",
+      "auxiliary": "avoir"
+    }
+  }
+}

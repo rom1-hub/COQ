@@ -31,7 +31,7 @@ jobs:
       - name: Prepare Pages artifact
         run: |
           mkdir -p dist
-          cp frontend/conjugacion.html frontend/styles.css frontend/app.js frontend/.nojekyll dist/
+          cp frontend/conjugacion.html frontend/styles.css frontend/app.js frontend/verb-profiles.demo.json frontend/.nojekyll dist/
           cat > dist/index.html <<'HTML'
           <!doctype html>
           <html lang="es">
