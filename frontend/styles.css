@@ -94,10 +94,12 @@ input:invalid, select:invalid { box-shadow:none; }
   .selection-summary dd { margin-bottom:8px; }
 }
 
-/* En consulta se muestran solo el verbo y el tiempo; los otros filtros son exclusivos de práctica. */
-#search-form[data-mode="lookup"] .filter-practice-only { display: none !important; }
-#search-form[data-mode="lookup"] .filters-grid {
-  grid-template-columns: minmax(0, 1fr);
-  max-width: 600px;
-}
-#search-form[data-mode="lookup"] .field-wide { margin-bottom: 18px; }
+/* Los modos son paneles independientes: sus formularios y valores no se comparten. */
+.mode-panel[hidden] { display: none !important; }
+.lookup-tense-field { max-width: 600px; }
+#lookup-form .field-wide { margin-bottom: 18px; }
+#practice-form .filters-grid { margin-top: 2px; }
+.profile-help { display: block; padding: 9px 11px; border-radius: 8px; background: #f1f7fa; color: #466273 !important; }
+select:disabled { background: #f2f5f7; color: #526776; }
+#practice-form .form-footer { justify-content: flex-start; flex-wrap: wrap; }
+#practice-form .helper-text { flex: 1 1 100%; max-width: none; }

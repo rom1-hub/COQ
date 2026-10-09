@@ -81,3 +81,8 @@ GitHub Pages solo aloja archivos estáticos. FastAPI necesita un servicio de bac
 6. Cada corrección lingüística importante incorpora una prueba de regresión.
 
 Consulta `docs/CONTRATS-LINGUISTIQUES.md`, `docs/DECISIONS.md` y `docs/ARCHITECTURE.md` antes de implementar el motor.
+
+
+## Prueba de independencia y filtros (prototipo UI v0.4)
+
+Servir `frontend/` por HTTP y abrir `/conjugacion.html`. Cada modo conserva sus propios campos. En «Practicar», el menú «Grupo o familia verbal» contiene directamente los grupos y las familias. Escribe `parler` para verificar el ejemplo demostrativo: el selector de grupo, la construcción y el auxiliar se rellenan y bloquean; el tiempo permanece habilitado. Es un fixture de interfaz, no el catálogo definitivo. Para resetear, usa «Reiniciar práctica» dentro de ese modo.

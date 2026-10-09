@@ -14,17 +14,17 @@
       <span class="brand-mark" aria-hidden="true">C</span>
       <span><strong>COQ</strong><small>FRANÇAIS</small></span>
     </a>
-    <span class="version-label">Proyecto nuevo · interfaz v0.3</span>
+    <span class="version-label">Proyecto nuevo · interfaz v0.4</span>
   </header>
 
   <main class="container">
     <section class="intro">
       <p class="eyebrow">FRANÇAIS · CONJUGAISON</p>
       <h1>La conjugación,<br><span>con reglas claras.</span></h1>
-      <p class="lead">Consulta y practica la conjugación francesa: los tiempos y modos verbales, participe présent y gérondif présent. Los controles de esta pantalla ya son interactivos; el catálogo y el motor lingüístico de Python son la siguiente fase.</p>
+      <p class="lead">Consulta y practica la conjugación francesa: los tiempos y modos verbales, participe présent y gérondif présent. Cada modo conserva sus propios campos; el catálogo completo y el motor lingüístico de Python son la siguiente fase.</p>
       <div class="status-note" role="status">
         <span class="status-dot" aria-hidden="true"></span>
-        Interfaz interactiva · motor de conjugación pendiente
+        Formularios independientes · perfil demostrativo limitado
       </div>
     </section>
 
@@ -34,26 +34,76 @@
           <p class="eyebrow">ESPACE DE TRAVAIL</p>
           <h2 id="workspace-title">Conjugaison</h2>
         </div>
-        <button id="reset-all" class="button button-secondary" type="button" hidden>Reiniciar</button>
       </div>
 
       <div class="mode-switch" role="tablist" aria-label="Modo de conjugación">
-        <button id="tab-lookup" class="mode-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="panel" data-mode="lookup">Ver conjugación</button>
-        <button id="tab-practice" class="mode-tab" type="button" role="tab" aria-selected="false" aria-controls="panel" data-mode="practice">Practicar</button>
+        <button id="tab-lookup" class="mode-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="lookup-panel" data-mode="lookup">Ver conjugación</button>
+        <button id="tab-practice" class="mode-tab" type="button" role="tab" aria-selected="false" aria-controls="practice-panel" data-mode="practice">Practicar</button>
       </div>
 
-      <div id="panel" class="panel" role="tabpanel" aria-labelledby="tab-lookup">
-        <form id="search-form" novalidate>
+      <section id="lookup-panel" class="panel mode-panel" role="tabpanel" aria-labelledby="tab-lookup">
+        <form id="lookup-form" novalidate>
           <div class="field field-wide">
-            <label for="verb-search">Verbo</label>
-            <input id="verb-search" name="verb" type="search" autocomplete="off" placeholder="Escribe un infinitivo, por ejemplo parler" aria-describedby="verb-help">
-            <small id="verb-help">Introduce el infinitivo francés que quieres consultar.</small>
+            <label for="lookup-verb">Verbo</label>
+            <input id="lookup-verb" name="verb" type="search" autocomplete="off" placeholder="Escribe un infinitivo, por ejemplo parler" aria-describedby="lookup-verb-help">
+            <small id="lookup-verb-help">Introduce el infinitivo francés que quieres consultar.</small>
+          </div>
+
+          <div class="field lookup-tense-field">
+            <label for="lookup-tense">Tiempo o forma verbal</label>
+            <select id="lookup-tense" name="tense">
+              <option value="">Todos los tiempos verbales</option>
+              <optgroup label="Formas simples">
+                <option value="present_indicatif">Présent de l'indicatif</option>
+                <option value="imperatif_present">Impératif</option>
+                <option value="imparfait">Imparfait</option>
+                <option value="conditionnel_present">Conditionnel présent</option>
+                <option value="futur_simple">Futur simple</option>
+                <option value="subjonctif_present">Subjonctif présent</option>
+              </optgroup>
+              <optgroup label="Formas compuestas">
+                <option value="passe_compose">Passé composé</option>
+                <option value="plus_que_parfait">Plus-que-parfait</option>
+                <option value="conditionnel_passe">Conditionnel passé</option>
+                <option value="futur_anterieur">Futur antérieur</option>
+                <option value="subjonctif_passe">Subjonctif passé</option>
+              </optgroup>
+              <optgroup label="Formas no personales">
+                <option value="participe_present">Participe présent</option>
+                <option value="gerondif_present">Gérondif présent</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <div class="form-footer">
+            <p class="helper-text">Consulta únicamente: verbo + tiempo o forma verbal.</p>
+            <button class="button button-primary" type="submit">Consultar conjugación</button>
+          </div>
+        </form>
+
+        <section id="lookup-feedback" class="feedback" role="status" aria-live="polite" hidden>
+          <div class="feedback-heading">
+            <strong id="lookup-feedback-title">Consulta</strong>
+            <span id="lookup-feedback-kind" class="feedback-kind">Consulta</span>
+          </div>
+          <p id="lookup-feedback-body"></p>
+          <dl id="lookup-summary" class="selection-summary" hidden></dl>
+        </section>
+      </section>
+
+      <section id="practice-panel" class="panel mode-panel" role="tabpanel" aria-labelledby="tab-practice" hidden>
+        <form id="practice-form" novalidate>
+          <div class="field field-wide">
+            <label for="practice-verb">Verbo específico (opcional)</label>
+            <input id="practice-verb" name="verb" type="search" autocomplete="off" placeholder="Escribe un verbo o practica por grupo/familia" aria-describedby="practice-verb-help">
+            <small id="practice-verb-help">Si el catálogo reconoce el verbo, sus filtros se completarán y bloquearán. Por ahora, solo «parler» está configurado como ejemplo de interfaz.</small>
+            <small id="practice-profile-help" class="profile-help" role="status" aria-live="polite">Sin verbo específico: puedes elegir los filtros de práctica.</small>
           </div>
 
           <div class="filters-grid">
             <div class="field">
-              <label for="tense">Tiempo o forma verbal</label>
-              <select id="tense" name="tense">
+              <label for="practice-tense">Tiempo o forma verbal</label>
+              <select id="practice-tense" name="tense">
                 <option value="">Todos los tiempos verbales</option>
                 <optgroup label="Formas simples">
                   <option value="present_indicatif">Présent de l'indicatif</option>
@@ -76,69 +126,70 @@
                 </optgroup>
               </select>
             </div>
-            <div class="field filter-practice-only">
-              <label for="group">Grupo o familia verbal</label>
-              <select id="group" name="group">
-                <option value="">Todos los grupos</option>
-                <option value="1">Premier groupe</option>
-                <option value="2">Deuxième groupe</option>
-                <option value="3">Troisième groupe</option>
-                <option value="family">Familia morfológica</option>
+
+            <div class="field">
+              <label for="practice-scope">Grupo o familia verbal</label>
+              <select id="practice-scope" name="scope">
+                <option value="">Todos los grupos y familias</option>
+                <optgroup label="Grupos verbales">
+                  <option value="group:1">Premier groupe</option>
+                  <option value="group:2">Deuxième groupe</option>
+                  <option value="group:3">Troisième groupe</option>
+                </optgroup>
+                <optgroup label="Familias morfológicas">
+                  <option value="family:ger">-GER</option>
+                  <option value="family:cer">-CER</option>
+                  <option value="family:eler">-ELER</option>
+                  <option value="family:eter">-ETER</option>
+                  <option value="family:yer">-YER</option>
+                  <option value="family:e_grave">E/È + consonante + -ER</option>
+                  <option value="family:ir_second">-IR del segundo grupo (-issant)</option>
+                  <option value="family:ir_third">-IR del tercer grupo</option>
+                  <option value="family:dre">-DRE</option>
+                  <option value="family:eindre_aindre_oindre">-EINDRE / -AINDRE / -OINDRE</option>
+                  <option value="family:uire">-UIRE</option>
+                  <option value="family:other_irregular">Otros patrones irregulares</option>
+                </optgroup>
               </select>
+              <small>Las familias aparecen directamente en el menú. El catálogo completo verificará la pertenencia de cada verbo.</small>
             </div>
-            <div id="family-field" class="field field-full filter-practice-only" hidden>
-              <label for="family">Familia morfológica</label>
-              <select id="family" name="family" disabled>
-                <option value="">Selecciona una familia</option>
-                <option value="ger">-GER</option>
-                <option value="cer">-CER</option>
-                <option value="eler">-ELER</option>
-                <option value="eter">-ETER</option>
-                <option value="yer">-YER</option>
-                <option value="e_grave">E/È + consonante + -ER</option>
-                <option value="ir_second">-IR del segundo grupo (-issant)</option>
-                <option value="ir_third">-IR del tercer grupo</option>
-                <option value="dre">-DRE</option>
-                <option value="eindre_aindre_oindre">-EINDRE / -AINDRE / -OINDRE</option>
-                <option value="uire">-UIRE</option>
-                <option value="other_irregular">Otros patrones irregulares</option>
-              </select>
-              <small>Lista inicial de familias; se ampliará y auditará con el catálogo.</small>
-            </div>
-            <div class="field filter-practice-only">
-              <label for="construction">Construcción</label>
-              <select id="construction" name="construction">
+
+            <div class="field">
+              <label for="practice-construction">Construcción</label>
+              <select id="practice-construction" name="construction">
                 <option value="">Todas las construcciones</option>
                 <option value="non_pronominal">No pronominal</option>
                 <option value="pronominal">Pronominal</option>
               </select>
             </div>
-            <div class="field filter-practice-only">
-              <label for="auxiliary">Verbo auxiliar</label>
-              <select id="auxiliary" name="auxiliary">
+
+            <div class="field">
+              <label for="practice-auxiliary">Verbo auxiliar</label>
+              <select id="practice-auxiliary" name="auxiliary">
                 <option value="">Todos los auxiliares</option>
                 <option value="avoir">AVOIR</option>
                 <option value="etre">ÊTRE</option>
               </select>
-              <small id="auxiliary-help">El filtro de auxiliar se aplica a los tiempos compuestos.</small>
+              <small>Se aplica a los tiempos compuestos; se bloqueará cuando el perfil de un verbo concreto esté disponible.</small>
             </div>
           </div>
 
           <div class="form-footer">
-            <p id="mode-hint" class="helper-text">Consulta: introduce un verbo para preparar la búsqueda.</p>
-            <button class="button button-primary" type="submit" id="submit-search">Consultar conjugación</button>
+            <p class="helper-text">Práctica repetitiva de conjugaciones aisladas · objetivo previsto: 20 preguntas.</p>
+            <button class="button button-secondary" id="reset-practice" type="button">Reiniciar práctica</button>
+            <button class="button button-primary" type="submit">Preparar práctica</button>
           </div>
         </form>
 
-        <section id="feedback" class="feedback" role="status" aria-live="polite" hidden>
+        <section id="practice-feedback" class="feedback" role="status" aria-live="polite" hidden>
           <div class="feedback-heading">
-            <strong id="feedback-title">Solicitud preparada</strong>
-            <span id="feedback-kind" class="feedback-kind">Consulta</span>
+            <strong id="practice-feedback-title">Práctica</strong>
+            <span id="practice-feedback-kind" class="feedback-kind">Práctica</span>
           </div>
-          <p id="feedback-body"></p>
-          <dl id="selection-summary" class="selection-summary" hidden></dl>
+          <p id="practice-feedback-body"></p>
+          <dl id="practice-summary" class="selection-summary" hidden></dl>
         </section>
-      </div>
+      </section>
     </section>
 
     <section class="principles" aria-labelledby="principles-title">
@@ -154,7 +205,7 @@
 
   <footer class="site-footer">
     <span>COQ · Módulo de conjugación</span>
-    <a href="https://github.com/rom1-hub" rel="noopener noreferrer">GitHub</a>
+    <a href="https://github.com/rom1-hub/COQ" rel="noopener noreferrer">Repositorio GitHub</a>
   </footer>
 </body>
 </html>

@@ -27,14 +27,14 @@ def test_named_page_and_interactive_controls_are_present():
     assert not (frontend / "index.html").exists()
     assert 'id="tab-lookup"' in html
     assert 'id="tab-practice"' in html
-    assert 'id="reset-all"' in html
-    assert 'id="search-form"' in html
-    assert 'id="family-field"' in html
-    assert 'id="selection-summary"' in html
+    assert 'id="reset-practice"' in html
+    assert 'id="lookup-form"' in html
+    assert 'id="practice-form"' in html
+    assert 'id="lookup-summary"' in html
+    assert 'id="practice-summary"' in html
     assert 'addEventListener("click"' in script
     assert 'addEventListener("submit"' in script
-    assert 'addEventListener("change"' in script
-    assert 'addEventListener("click", () => {' in script
+    assert 'addEventListener("input"' in script
 
 
 def test_every_javascript_id_selector_exists_in_html():
@@ -48,26 +48,68 @@ def test_every_javascript_id_selector_exists_in_html():
 def test_all_primary_actions_have_event_handlers():
     script = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
     for expected in (
-        'tabs.forEach((tab) => {',
-        'groupSelect.addEventListener("change"',
-        'tenseSelect.addEventListener("change"',
-        'form.addEventListener("submit"',
-        'reset.addEventListener("click"',
+        'tabs.forEach((tab) => tab.addEventListener("click"',
+        'practiceVerb.addEventListener("input"',
+        'lookupForm.addEventListener("submit"',
+        'practiceForm.addEventListener("submit"',
+        'resetPractice.addEventListener("click"',
     ):
         assert expected in script
 
 
-def test_lookup_mode_only_displays_verb_and_tense_controls():
+def test_lookup_and_practice_use_independent_forms_and_controls():
     frontend = ROOT / "frontend"
     html = (frontend / "conjugacion.html").read_text(encoding="utf-8")
     script = (frontend / "app.js").read_text(encoding="utf-8")
-    css = (frontend / "styles.css").read_text(encoding="utf-8")
 
-    assert 'option value="">Todos los tiempos verbales</option>' in html
-    assert 'value="imperatif_present">Impératif</option>' in html
-    assert html.count('class="field filter-practice-only"') == 3
-    assert 'class="field field-full filter-practice-only"' in html
-    assert '#search-form[data-mode="lookup"] .filter-practice-only' in css
-    assert 'form.dataset.mode = mode;' in script
-    assert 'reset.hidden = mode === "lookup";' in script
-    assert 'if (mode === "practice" && groupSelect.value === "family" && !selectedFamily)' in script
+    assert 'id="lookup-form"' in html
+    assert 'id="practice-form"' in html
+    assert 'id="lookup-verb"' in html
+    assert 'id="practice-verb"' in html
+    assert 'id="lookup-tense"' in html
+    assert 'id="practice-tense"' in html
+    assert 'id="lookup-panel"' in html
+    assert 'id="practice-panel"' in html
+    assert 'lookupPanel.hidden = !isLookup;' in script
+    assert 'practicePanel.hidden = isLookup;' in script
+    assert 'lookupForm.addEventListener("submit"' in script
+    assert 'practiceForm.addEventListener("submit"' in script
+    assert 'currentLookupSummary()' in script
+    assert 'currentPracticeSummary()' in script
+
+
+def test_practice_scope_lists_groups_and_morphological_families_directly():
+    frontend = ROOT / "frontend"
+    html = (frontend / "conjugacion.html").read_text(encoding="utf-8")
+    for value in (
+        "family:ger", "family:cer", "family:eler", "family:eter", "family:yer",
+        "family:e_grave", "family:ir_second", "family:ir_third", "family:dre",
+        "family:eindre_aindre_oindre", "family:uire", "family:other_irregular",
+    ):
+        assert f'value="{value}"' in html
+    assert 'label="Familias morfológicas"' in html
+    assert 'id="practice-scope"' in html
+    assert 'id="family-field"' not in html
+
+
+def test_demo_profile_locks_only_non_tense_filters_for_parler():
+    frontend = ROOT / "frontend"
+    profiles = __import__("json").loads((frontend / "verb-profiles.demo.json").read_text(encoding="utf-8"))
+    script = (frontend / "app.js").read_text(encoding="utf-8")
+    parler = profiles["profiles"]["parler"]
+    assert parler["scope"] == "group:1"
+    assert parler["construction"] == "non_pronominal"
+    assert parler["auxiliary"] == "avoir"
+    assert profiles["_meta"]["authoritative"] is False
+    assert 'practiceScope.disabled = true;' in script
+    assert 'practiceConstruction.disabled = true;' in script
+    assert 'practiceAuxiliary.disabled = true;' in script
+    assert 'practiceTense' in script
+    assert 'if (!profile && activePracticeProfile) restoreUnlockedPracticeValues();' in script
+    assert 'unlockedPracticeValues = null;' in script
+    assert 'practiceForm.reset();' in script
+
+
+def test_github_pages_copies_the_ui_profile_fixture():
+    workflow = (ROOT / ".github" / "workflows" / "pages.yml").read_text(encoding="utf-8")
+    assert "frontend/verb-profiles.demo.json" in workflow
