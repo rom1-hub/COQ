@@ -106,7 +106,7 @@ En ejercicios, el contexto explícito de género/número se utiliza para los tie
 - masculino plural;
 - femenino plural.
 
-No se ofrecerá femenino singular para `on` en esta primera definición. Se distinguirá la persona gramatical de la concordancia semántica cuando corresponda. Para `vous`, se distinguen tanto el singular de cortesía como el plural; el género y número de la concordancia se resuelven con el contexto semántico del ejercicio. En la consulta compacta se podrá usar `vous êtes parti(e)` para el singular de cortesía y `vous êtes parti(e)(s)` para representar la variación de género/número del plural.
+No se ofrecerá femenino singular para `on` en esta primera definición. Se distinguirá la persona gramatical de la concordancia semántica cuando corresponda. Para `vous`, se distinguen tanto el singular de cortesía como el plural. El contexto registra el uso de manera explícita (`courtesy` para el singular de cortesía; `standard` para el uso plural/estándar). En los tiempos simples se conserva ese uso sin exigir género/número de concordancia. En los tiempos compuestos, el género y número se resuelven con el contexto semántico del ejercicio: el singular de cortesía requiere número singular y género explícitos, mientras el uso plural requiere número plural y género explícitos. En la consulta compacta se podrá usar `vous êtes parti(e)` para el singular de cortesía y `vous êtes parti(e)(s)` para representar la variación de género/número del plural.
 
 ## L-07. Familias morfológicas
 

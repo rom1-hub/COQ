@@ -31,6 +31,7 @@ from app.domain.verb_contracts import (
     SourceEvidence,
     VerbGroup,
     VerbRecord,
+    Usage,
 )
 
 
@@ -122,7 +123,52 @@ def context(person: PersonId, gender: Gender | None = None, number: GrammaticalN
         values["number"] = number
     if usage is not None:
         values["usage"] = usage
+    elif person == PersonId.VOUS:
+        # Test fixtures must make the vous use explicit, just like production callers.
+        values["usage"] = Usage.STANDARD
     return FormContext(**values)
+
+
+def test_vous_courtesy_is_explicit_in_simple_forms_without_agreement_context():
+    verb, pattern, construction_id = make_verb()
+    courtesy = context(PersonId.VOUS, usage=Usage.COURTESY)
+
+    result = ENGINE.generate(verb, pattern, construction_id, FormId.PRESENT_INDICATIF, courtesy)
+
+    assert result.preferred_form == "parlez"
+    assert result.context.usage == Usage.COURTESY
+    assert result.context.gender is None
+    assert result.context.number is None
+
+
+def test_vous_courtesy_compound_uses_singular_agreement_context():
+    verb, pattern, construction_id = make_verb("arriver", auxiliary=Auxiliary.ETRE)
+    courtesy_feminine = context(
+        PersonId.VOUS, Gender.FEMININE, GrammaticalNumber.SINGULAR, Usage.COURTESY
+    )
+    plural_feminine = context(
+        PersonId.VOUS, Gender.FEMININE, GrammaticalNumber.PLURAL, Usage.STANDARD
+    )
+
+    assert ENGINE.generate(
+        verb, pattern, construction_id, FormId.PASSE_COMPOSE, courtesy_feminine
+    ).preferred_form == "êtes arrivée"
+    assert ENGINE.generate(
+        verb, pattern, construction_id, FormId.PASSE_COMPOSE, plural_feminine
+    ).preferred_form == "êtes arrivées"
+
+
+def test_se_ficher_is_not_elided_and_uses_only_its_registered_display_infinitive():
+    verb, pattern, construction_id = make_verb(
+        "ficher",
+        construction_kind=ConstructionKind.PRONOMINAL,
+        display_infinitive="se ficher",
+    )
+
+    assert verb.constructions[0].display_infinitive == "se ficher"
+    assert ENGINE.generate(
+        verb, pattern, construction_id, FormId.PRESENT_INDICATIF, context(PersonId.JE)
+    ).preferred_form == "me fiche"
 
 
 def test_regular_er_present_indicative_all_nine_ui_subjects():
@@ -462,4 +508,3 @@ def test_regular_er_algorithm_requires_matching_registered_family():
     )
     with pytest.raises(PatternMismatchError, match="do not include the registered pattern family"):
         ENGINE.generate(verb_without_family, pattern, construction_id, FormId.PRESENT_INDICATIF, context(PersonId.JE))
-

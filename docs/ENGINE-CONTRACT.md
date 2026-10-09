@@ -16,6 +16,8 @@ La consulta no incluye el sujeto ni el marcador `que` del subjuntivo en la forma
 - No se deduce una familia por la terminación del infinitivo. Cada algoritmo se ejecuta únicamente si el catálogo le asigna explícitamente ese patrón.
 - Las sobrescrituras solo se aplican cuando están `forms_reviewed` o `approved`. Una sobrescritura coincidente que siga pendiente bloquea la generación para evitar que un algoritmo base la oculte.
 - Las variantes mantienen acentos y escritura exactos. El motor no “corrige” la respuesta del alumno.
+- `vous` requiere `usage` explícito (`standard` o `courtesy`). En formas simples no exige contexto de concordancia; en tiempos compuestos exige género y número acordes con ese uso.
+- La construcción `se ficher` se identifica mediante el `display_infinitive` registrado; no se deduce una forma elidida ni se generan construcciones alternativas no registradas.
 - Para verbos defectivos o impersonales se requiere una decisión explícita de disponibilidad o una sobrescritura revisada para la forma/contexto pedido.
 - `participe_passe` es interno y no se puede solicitar como forma visible independiente.
 
@@ -47,4 +49,3 @@ El motor define errores estables (`UNAPPROVED_RECORD`, `PATTERN_MISMATCH`, `UNSU
 ## 6. Puerta para ampliar patrones
 
 Cada nueva `algorithm_key` requiere pruebas de regresión propias para cada forma que afirme soportar, evidencia de revisión del patrón y contraste manual de casos representativos según `docs/CONTRATS-LINGUISTIQUES.md`. El algoritmo solo se podrá asignar a patrones de producción cuando el patrón esté revisado y aprobado. La lista MIT de candidatos no es evidencia de formas.
-

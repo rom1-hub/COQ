@@ -301,9 +301,19 @@ def test_compound_form_override_requires_gender_and_number_context():
 def test_vous_context_requires_explicit_courtesy_or_plural_use():
     with pytest.raises(ValidationError, match="singular vous requires courtesy usage"):
         FormContext(person=PersonId.VOUS, gender=Gender.MASCULINE, number=GrammaticalNumber.SINGULAR)
-    plural = FormContext(
+    with pytest.raises(ValidationError, match="vous requires explicit courtesy or standard usage"):
+        FormContext(person=PersonId.VOUS)
+
+    # Simple forms need usage metadata, but not agreement gender/number.
+    courtesy_simple = FormContext(person=PersonId.VOUS, usage="courtesy")
+    plural_simple = FormContext(person=PersonId.VOUS, usage="standard")
+    assert courtesy_simple.gender is None and courtesy_simple.number is None
+    assert plural_simple.gender is None and plural_simple.number is None
+
+    plural_compound = FormContext(
         person=PersonId.VOUS,
         gender=Gender.MASCULINE,
         number=GrammaticalNumber.PLURAL,
+        usage="standard",
     )
-    assert plural.number == GrammaticalNumber.PLURAL
+    assert plural_compound.number == GrammaticalNumber.PLURAL

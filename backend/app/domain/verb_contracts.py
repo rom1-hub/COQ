@@ -209,12 +209,17 @@ class FormContext(ContractModel):
             raise ValueError("gender and number must be provided together")
 
         if self.person == PersonId.VOUS:
-            if self.usage == Usage.COURTESY and self.number != GrammaticalNumber.SINGULAR:
+            # For simple forms, usage alone distinguishes ordinary/plural vous
+            # from singular courtesy vous. Agreement gender/number is only
+            # required when the selected form actually needs agreement.
+            if self.usage == Usage.COURTESY and self.number not in {None, GrammaticalNumber.SINGULAR}:
                 raise ValueError("courtesy usage is reserved for singular vous")
             if self.number == GrammaticalNumber.SINGULAR and self.usage != Usage.COURTESY:
                 raise ValueError("singular vous requires courtesy usage")
-        elif self.usage == Usage.COURTESY:
-            raise ValueError("courtesy usage is reserved for vous")
+            if self.usage is None:
+                raise ValueError("vous requires explicit courtesy or standard usage")
+        elif self.usage is not None:
+            raise ValueError("usage is reserved for vous")
 
         if self.number is not None:
             fixed_singular = {PersonId.JE, PersonId.TU, PersonId.IL, PersonId.ELLE}
