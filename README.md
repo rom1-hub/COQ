@@ -12,7 +12,16 @@ Proyecto nuevo e independiente para una plataforma de francés. La primera secci
 - [x] API mínima FastAPI con comprobación de estado.
 - [x] Contratos lingüísticos y registro de decisiones.
 - [x] Pruebas automatizadas y workflow de publicación.
-- [ ] Auditoría de fuentes y modelo de datos del catálogo verbal.
+- [x] Contrato técnico Pydantic y JSON Schema para el catálogo verbal.
+- [x] Registros iniciales versionados de 14 patrones y 19 scopes, todos pendientes de validación lingüística/miembros.
+- [x] Validador de catálogos para comprobar IDs únicos y referencias cruzadas.
+- [x] Contrato de API para separar filtros de scope y perfil de verbo específico.
+- [x] Auditoría inicial de restricciones de las fuentes y alternativas licenciadas.
+- [x] Selección de una fuente MIT fijada para una cola auxiliar de lemas candidatos (no conjugaciones).
+- [x] Ejecutar el importador fijado (7.075 candidatos en el entorno de desarrollo Windows).
+- [x] Crear una auditoría heurística reproducible para priorizar la revisión de lemas; sus alertas no aprueban ni rechazan verbos.
+- [ ] Decidir la licencia general de COQ y la fuente licenciada de conjugaciones para producción.
+- [ ] Construir el catálogo canónico `verbs.jsonl` con metadatos, formas y evidencias revisadas.
 - [ ] Catálogo verbal auditado y validado.
 - [ ] Motor de conjugación Python.
 - [ ] Integración entre interfaz y API.
@@ -48,8 +57,7 @@ Para ejecutar la API en otra ventana de PowerShell:
 ```powershell
 py -m venv .venv
 .\.venv\Scripts\Activate.ps1
-py -m pip install -r backend
-equirements-dev.txt
+py -m pip install -r backend/requirements-dev.txt
 $env:PYTHONPATH = "backend"
 uvicorn app.main:app --app-dir backend --reload
 ```
@@ -80,7 +88,13 @@ GitHub Pages solo aloja archivos estáticos. FastAPI necesita un servicio de bac
 5. Las formas inexistentes no se inventan y las variantes aprobadas quedan registradas.
 6. Cada corrección lingüística importante incorpora una prueba de regresión.
 
-Consulta `docs/CONTRATS-LINGUISTIQUES.md`, `docs/DECISIONS.md` y `docs/ARCHITECTURE.md` antes de implementar el motor.
+Consulta `docs/CONTRATS-LINGUISTIQUES.md`, `docs/DATA-CONTRACT.md`, `docs/DATA-SOURCE-AUDIT.md`, `docs/CANDIDATE-AUDIT-GUIDE.md`, `docs/DECISIONS.md` y `docs/ARCHITECTURE.md` antes de implementar el motor.
+
+Para regenerar JSON Schema: `$env:PYTHONPATH = "backend"; py scripts/export_data_contract_schemas.py`.
+
+### Inventario auxiliar de lemas candidatos
+
+Desde la raíz de COQ y con acceso a Internet, ejecutar `py scripts/import_candidate_infinitives.py` para generar la cola de infinitivos candidatos. Después ejecutar `py scripts/audit_candidate_infinitives.py`, que produce JSONL, CSV y resumen con señales heurísticas para priorizar revisiones. Esas señales **no** aprueban ni rechazan verbos: no reemplazan la revisión lingüística, y la ausencia de alertas no demuestra que un lema sea correcto. Finalmente, ejecutar `py scripts/validate_catalog.py` y las pruebas. La fuente de conjugaciones de producción sigue pendiente de selección.
 
 
 ## Prueba de independencia y filtros (prototipo UI v0.4)

@@ -1,0 +1,49 @@
+{
+  "input_file": "D:\\COQ\\COQ\\data\\catalogs\\candidate-infinitives.jsonl",
+  "decision_file": "D:\\COQ\\COQ\\data\\catalogs\\lemma-review-decisions.jsonl",
+  "candidate_count": 7075,
+  "candidates_with_findings": 59,
+  "candidates_without_heuristic_findings": 7016,
+  "candidates_with_open_findings": 57,
+  "candidates_with_only_resolved_findings": 2,
+  "candidates_with_review_decisions": 2,
+  "editorial_observation_decision_count": 1,
+  "decision_outcome_counts": {
+    "lemma_metadata_reviewed": 1,
+    "source_token_not_canonical_lemma": 2
+  },
+  "review_status_counts": {
+    "candidate": 7073,
+    "metadata_reviewed_forms_pending": 1,
+    "source_token_not_canonical_lemma": 1
+  },
+  "triage_counts": {
+    "basic_review": 7016,
+    "manual_review": 57,
+    "resolved": 2
+  },
+  "finding_counts": {
+    "apostrophe_token_needs_lemma_review": 2,
+    "ending_not_in_er_ir_re_oir": 1,
+    "first_group_suggestion_not_er": 1,
+    "hyphenated_token_needs_lemma_review": 44,
+    "multiword_token_needs_lemma_review": 12
+  },
+  "resolved_finding_counts": {
+    "ending_not_in_er_ir_re_oir": 1,
+    "first_group_suggestion_not_er": 1,
+    "hyphenated_token_needs_lemma_review": 1
+  },
+  "open_finding_counts": {
+    "apostrophe_token_needs_lemma_review": 2,
+    "hyphenated_token_needs_lemma_review": 43,
+    "multiword_token_needs_lemma_review": 12
+  },
+  "approved_for_production_count": 0,
+  "important_limit": "Heuristic flags are preserved as raw findings. Candidate-scoped decisions may mark listed findings as resolved; editorial observations are retained in the decision ledger but are not treated as imported candidates. Source tokens not accepted as canonical COQ lemmas remain traceable and linked to a related lemma; this decision does not claim that every usage is impossible in the language. No conjugation forms are approved for production. Absence of a flag is not linguistic validation.",
+  "outputs": {
+    "jsonl": "candidate-infinitives-audit.jsonl",
+    "csv": "candidate-infinitives-audit.csv",
+    "summary": "candidate-infinitives-audit-summary.json"
+  }
+}

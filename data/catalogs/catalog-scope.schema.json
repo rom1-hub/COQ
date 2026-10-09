@@ -1,0 +1,136 @@
+{
+  "$defs": {
+    "MembershipPolicy": {
+      "enum": [
+        "all_approved_verbs",
+        "group_membership",
+        "registered_patterns",
+        "explicit_verb_ids",
+        "patterns_and_explicit_ids"
+      ],
+      "title": "MembershipPolicy",
+      "type": "string"
+    },
+    "ScopeKind": {
+      "enum": [
+        "all",
+        "group",
+        "family",
+        "collection"
+      ],
+      "title": "ScopeKind",
+      "type": "string"
+    },
+    "ScopeStatus": {
+      "enum": [
+        "planned",
+        "active",
+        "retired"
+      ],
+      "title": "ScopeStatus",
+      "type": "string"
+    },
+    "VerbGroup": {
+      "enum": [
+        "first",
+        "second",
+        "third"
+      ],
+      "title": "VerbGroup",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Stable selector entry for a verb group, morphology family or curated set.",
+  "properties": {
+    "scope_id": {
+      "pattern": "^(all|group|family|collection):[a-z0-9_]+$",
+      "title": "Scope Id",
+      "type": "string"
+    },
+    "kind": {
+      "$ref": "#/$defs/ScopeKind"
+    },
+    "label_es": {
+      "maxLength": 120,
+      "minLength": 2,
+      "title": "Label Es",
+      "type": "string"
+    },
+    "label_fr": {
+      "anyOf": [
+        {
+          "maxLength": 120,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Label Fr"
+    },
+    "group_id": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/VerbGroup"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "membership_policy": {
+      "$ref": "#/$defs/MembershipPolicy"
+    },
+    "pattern_ids": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 100,
+      "title": "Pattern Ids",
+      "type": "array"
+    },
+    "verb_ids": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 1000,
+      "title": "Verb Ids",
+      "type": "array"
+    },
+    "status": {
+      "$ref": "#/$defs/ScopeStatus",
+      "default": "planned"
+    },
+    "display_order": {
+      "minimum": 0,
+      "title": "Display Order",
+      "type": "integer"
+    },
+    "notes": {
+      "anyOf": [
+        {
+          "maxLength": 1000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Notes"
+    }
+  },
+  "required": [
+    "scope_id",
+    "kind",
+    "label_es",
+    "membership_policy",
+    "display_order"
+  ],
+  "title": "CatalogScope",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

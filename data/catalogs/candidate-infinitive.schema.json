@@ -1,0 +1,81 @@
+{
+  "$defs": {
+    "VerbGroup": {
+      "enum": [
+        "first",
+        "second",
+        "third"
+      ],
+      "title": "VerbGroup",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "An unreviewed source token, not a canonical verb record.",
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "candidate_id": {
+      "pattern": "^cand_[0-9a-f]{16}$",
+      "title": "Candidate Id",
+      "type": "string"
+    },
+    "candidate_form": {
+      "maxLength": 100,
+      "minLength": 2,
+      "title": "Candidate Form",
+      "type": "string"
+    },
+    "suggested_groups": {
+      "items": {
+        "$ref": "#/$defs/VerbGroup"
+      },
+      "maxItems": 3,
+      "minItems": 1,
+      "title": "Suggested Groups",
+      "type": "array"
+    },
+    "source_id": {
+      "const": "einenlum/french-verbs-list",
+      "default": "einenlum/french-verbs-list",
+      "title": "Source Id",
+      "type": "string"
+    },
+    "source_commit": {
+      "pattern": "^[0-9a-f]{40}$",
+      "title": "Source Commit",
+      "type": "string"
+    },
+    "review_status": {
+      "const": "candidate",
+      "default": "candidate",
+      "title": "Review Status",
+      "type": "string"
+    },
+    "group_suggestions_are_unverified": {
+      "const": true,
+      "default": true,
+      "title": "Group Suggestions Are Unverified",
+      "type": "boolean"
+    },
+    "requires_lemma_review": {
+      "const": true,
+      "default": true,
+      "title": "Requires Lemma Review",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "candidate_id",
+    "candidate_form",
+    "suggested_groups",
+    "source_commit"
+  ],
+  "title": "CandidateInfinitiveRecord",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

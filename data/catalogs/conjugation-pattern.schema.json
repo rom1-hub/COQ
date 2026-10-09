@@ -1,0 +1,275 @@
+{
+  "$defs": {
+    "EvidenceMethod": {
+      "enum": [
+        "manual_reference_check",
+        "licensed_dataset",
+        "linguistic_owner_approval",
+        "coq_rule_review"
+      ],
+      "title": "EvidenceMethod",
+      "type": "string"
+    },
+    "EvidenceScope": {
+      "enum": [
+        "lemma",
+        "group",
+        "family",
+        "pattern",
+        "construction",
+        "auxiliary",
+        "agreement",
+        "form",
+        "availability",
+        "data_license"
+      ],
+      "title": "EvidenceScope",
+      "type": "string"
+    },
+    "ReviewStatus": {
+      "enum": [
+        "draft",
+        "candidate",
+        "metadata_reviewed",
+        "forms_reviewed",
+        "approved",
+        "rejected"
+      ],
+      "title": "ReviewStatus",
+      "type": "string"
+    },
+    "SourceEvidence": {
+      "additionalProperties": false,
+      "description": "Evidence that can be audited later; automated scraping is not a method.",
+      "properties": {
+        "source_id": {
+          "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+          "title": "Source Id",
+          "type": "string"
+        },
+        "authority": {
+          "maxLength": 100,
+          "minLength": 2,
+          "title": "Authority",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 250,
+          "minLength": 2,
+          "title": "Label",
+          "type": "string"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "maxLength": 2083,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        },
+        "method": {
+          "$ref": "#/$defs/EvidenceMethod"
+        },
+        "scopes": {
+          "items": {
+            "$ref": "#/$defs/EvidenceScope"
+          },
+          "minItems": 1,
+          "title": "Scopes",
+          "type": "array"
+        },
+        "consulted_on": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Consulted On"
+        },
+        "edition": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Edition"
+        },
+        "dataset_version": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dataset Version"
+        },
+        "license_name": {
+          "anyOf": [
+            {
+              "maxLength": 150,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "License Name"
+        },
+        "license_url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "maxLength": 2083,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "License Url"
+        },
+        "decision_id": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Decision Id"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        }
+      },
+      "required": [
+        "source_id",
+        "authority",
+        "label",
+        "method",
+        "scopes"
+      ],
+      "title": "SourceEvidence",
+      "type": "object"
+    },
+    "VerbGroup": {
+      "enum": [
+        "first",
+        "second",
+        "third"
+      ],
+      "title": "VerbGroup",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Metadata for a named algorithm implemented in Python (never executable data).",
+  "properties": {
+    "pattern_id": {
+      "pattern": "^[a-z0-9]+(?:[._:-][a-z0-9]+)*$",
+      "title": "Pattern Id",
+      "type": "string"
+    },
+    "group_id": {
+      "$ref": "#/$defs/VerbGroup"
+    },
+    "family_id": {
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "title": "Family Id",
+      "type": "string"
+    },
+    "algorithm_key": {
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "title": "Algorithm Key",
+      "type": "string"
+    },
+    "algorithm_version": {
+      "minimum": 1,
+      "title": "Algorithm Version",
+      "type": "integer"
+    },
+    "model_verb_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Model Verb Id"
+    },
+    "review_status": {
+      "$ref": "#/$defs/ReviewStatus",
+      "default": "draft"
+    },
+    "source_evidence": {
+      "items": {
+        "$ref": "#/$defs/SourceEvidence"
+      },
+      "title": "Source Evidence",
+      "type": "array"
+    },
+    "notes": {
+      "anyOf": [
+        {
+          "maxLength": 1000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Notes"
+    }
+  },
+  "required": [
+    "pattern_id",
+    "group_id",
+    "family_id",
+    "algorithm_key",
+    "algorithm_version"
+  ],
+  "title": "ConjugationPattern",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

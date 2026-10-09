@@ -1,0 +1,73 @@
+{
+  "additionalProperties": false,
+  "description": "Machine-readable validation result; this is not a production approval.",
+  "properties": {
+    "valid": {
+      "title": "Valid",
+      "type": "boolean"
+    },
+    "ready_for_production": {
+      "title": "Ready For Production",
+      "type": "boolean"
+    },
+    "verb_count": {
+      "minimum": 0,
+      "title": "Verb Count",
+      "type": "integer"
+    },
+    "approved_verb_count": {
+      "minimum": 0,
+      "title": "Approved Verb Count",
+      "type": "integer"
+    },
+    "candidate_infinitive_count": {
+      "minimum": 0,
+      "title": "Candidate Infinitive Count",
+      "type": "integer"
+    },
+    "lemma_review_decision_count": {
+      "minimum": 0,
+      "title": "Lemma Review Decision Count",
+      "type": "integer"
+    },
+    "pattern_count": {
+      "minimum": 0,
+      "title": "Pattern Count",
+      "type": "integer"
+    },
+    "scope_count": {
+      "minimum": 0,
+      "title": "Scope Count",
+      "type": "integer"
+    },
+    "warnings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Warnings",
+      "type": "array"
+    },
+    "errors": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Errors",
+      "type": "array"
+    }
+  },
+  "required": [
+    "valid",
+    "ready_for_production",
+    "verb_count",
+    "approved_verb_count",
+    "candidate_infinitive_count",
+    "lemma_review_decision_count",
+    "pattern_count",
+    "scope_count",
+    "warnings",
+    "errors"
+  ],
+  "title": "CatalogValidationReport",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

@@ -1,0 +1,105 @@
+{
+  "$defs": {
+    "GroupSuffixException": {
+      "additionalProperties": false,
+      "properties": {
+        "candidate_form": {
+          "maxLength": 100,
+          "minLength": 2,
+          "title": "Candidate Form",
+          "type": "string"
+        },
+        "group_id": {
+          "$ref": "#/$defs/VerbGroup"
+        },
+        "accepted_suffixes": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 10,
+          "minItems": 1,
+          "title": "Accepted Suffixes",
+          "type": "array"
+        },
+        "rationale": {
+          "maxLength": 500,
+          "minLength": 10,
+          "title": "Rationale",
+          "type": "string"
+        }
+      },
+      "required": [
+        "candidate_form",
+        "group_id",
+        "accepted_suffixes",
+        "rationale"
+      ],
+      "title": "GroupSuffixException",
+      "type": "object"
+    },
+    "VerbGroup": {
+      "enum": [
+        "first",
+        "second",
+        "third"
+      ],
+      "title": "VerbGroup",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "recognized_infinitive_suffixes": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Recognized Infinitive Suffixes",
+      "type": "array"
+    },
+    "equivalent_suffix_classes": {
+      "additionalProperties": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "title": "Equivalent Suffix Classes",
+      "type": "object"
+    },
+    "group_expected_suffix_classes": {
+      "additionalProperties": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "propertyNames": {
+        "$ref": "#/$defs/VerbGroup"
+      },
+      "title": "Group Expected Suffix Classes",
+      "type": "object"
+    },
+    "group_suffix_exceptions": {
+      "items": {
+        "$ref": "#/$defs/GroupSuffixException"
+      },
+      "title": "Group Suffix Exceptions",
+      "type": "array"
+    }
+  },
+  "required": [
+    "recognized_infinitive_suffixes",
+    "equivalent_suffix_classes",
+    "group_expected_suffix_classes"
+  ],
+  "title": "CandidateAuditRules",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

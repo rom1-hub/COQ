@@ -1,0 +1,650 @@
+{
+  "$defs": {
+    "Auxiliary": {
+      "enum": [
+        "avoir",
+        "etre"
+      ],
+      "title": "Auxiliary",
+      "type": "string"
+    },
+    "AvailabilityStatus": {
+      "enum": [
+        "available",
+        "unavailable",
+        "not_reviewed"
+      ],
+      "title": "AvailabilityStatus",
+      "type": "string"
+    },
+    "ConstructionKind": {
+      "enum": [
+        "non_pronominal",
+        "pronominal"
+      ],
+      "title": "ConstructionKind",
+      "type": "string"
+    },
+    "ConstructionProfile": {
+      "additionalProperties": false,
+      "description": "A specific non-pronominal or pronominal construction for one lemma.",
+      "properties": {
+        "construction_id": {
+          "pattern": "^[a-z0-9]+(?:[._:-][a-z0-9]+)*$",
+          "title": "Construction Id",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/ConstructionKind"
+        },
+        "display_infinitive": {
+          "maxLength": 100,
+          "minLength": 2,
+          "title": "Display Infinitive",
+          "type": "string"
+        },
+        "auxiliary": {
+          "$ref": "#/$defs/Auxiliary"
+        },
+        "participle_agreement": {
+          "$ref": "#/$defs/ParticipleAgreementPolicy"
+        },
+        "review_status": {
+          "$ref": "#/$defs/ReviewStatus",
+          "default": "draft"
+        },
+        "form_overrides": {
+          "items": {
+            "$ref": "#/$defs/FormOverride"
+          },
+          "title": "Form Overrides",
+          "type": "array"
+        },
+        "availability_overrides": {
+          "items": {
+            "$ref": "#/$defs/FormAvailability"
+          },
+          "title": "Availability Overrides",
+          "type": "array"
+        },
+        "source_evidence": {
+          "items": {
+            "$ref": "#/$defs/SourceEvidence"
+          },
+          "title": "Source Evidence",
+          "type": "array"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        }
+      },
+      "required": [
+        "construction_id",
+        "kind",
+        "display_infinitive",
+        "auxiliary",
+        "participle_agreement"
+      ],
+      "title": "ConstructionProfile",
+      "type": "object"
+    },
+    "EvidenceMethod": {
+      "enum": [
+        "manual_reference_check",
+        "licensed_dataset",
+        "linguistic_owner_approval",
+        "coq_rule_review"
+      ],
+      "title": "EvidenceMethod",
+      "type": "string"
+    },
+    "EvidenceScope": {
+      "enum": [
+        "lemma",
+        "group",
+        "family",
+        "pattern",
+        "construction",
+        "auxiliary",
+        "agreement",
+        "form",
+        "availability",
+        "data_license"
+      ],
+      "title": "EvidenceScope",
+      "type": "string"
+    },
+    "FormAvailability": {
+      "additionalProperties": false,
+      "description": "Explicit availability exceptions, essential for defective/impersonal verbs.",
+      "properties": {
+        "form_id": {
+          "$ref": "#/$defs/FormId"
+        },
+        "context": {
+          "$ref": "#/$defs/FormContext"
+        },
+        "status": {
+          "$ref": "#/$defs/AvailabilityStatus"
+        },
+        "reason": {
+          "maxLength": 500,
+          "minLength": 2,
+          "title": "Reason",
+          "type": "string"
+        },
+        "source_evidence": {
+          "items": {
+            "$ref": "#/$defs/SourceEvidence"
+          },
+          "title": "Source Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "form_id",
+        "status",
+        "reason"
+      ],
+      "title": "FormAvailability",
+      "type": "object"
+    },
+    "FormContext": {
+      "additionalProperties": false,
+      "description": "Optional agreement context for a form whose surface spelling varies.",
+      "properties": {
+        "person": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PersonId"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "gender": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Gender"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "number": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/GrammaticalNumber"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "usage": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Usage"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "title": "FormContext",
+      "type": "object"
+    },
+    "FormId": {
+      "enum": [
+        "present_indicatif",
+        "imperatif_present",
+        "imparfait",
+        "conditionnel_present",
+        "futur_simple",
+        "subjonctif_present",
+        "passe_compose",
+        "plus_que_parfait",
+        "conditionnel_passe",
+        "futur_anterieur",
+        "subjonctif_passe",
+        "participe_present",
+        "gerondif_present",
+        "participe_passe"
+      ],
+      "title": "FormId",
+      "type": "string"
+    },
+    "FormOverride": {
+      "additionalProperties": false,
+      "description": "A reviewed exact form override; listed variants are all valid alternatives.",
+      "properties": {
+        "form_id": {
+          "$ref": "#/$defs/FormId"
+        },
+        "context": {
+          "$ref": "#/$defs/FormContext"
+        },
+        "preferred_form": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Preferred Form",
+          "type": "string"
+        },
+        "alternatives": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 10,
+          "title": "Alternatives",
+          "type": "array"
+        },
+        "operation": {
+          "default": "replace",
+          "enum": [
+            "replace",
+            "add"
+          ],
+          "title": "Operation",
+          "type": "string"
+        },
+        "review_status": {
+          "$ref": "#/$defs/ReviewStatus",
+          "default": "draft"
+        },
+        "source_evidence": {
+          "items": {
+            "$ref": "#/$defs/SourceEvidence"
+          },
+          "title": "Source Evidence",
+          "type": "array"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        }
+      },
+      "required": [
+        "form_id",
+        "preferred_form"
+      ],
+      "title": "FormOverride",
+      "type": "object"
+    },
+    "Gender": {
+      "enum": [
+        "masculine",
+        "feminine"
+      ],
+      "title": "Gender",
+      "type": "string"
+    },
+    "GrammaticalNumber": {
+      "enum": [
+        "singular",
+        "plural"
+      ],
+      "title": "GrammaticalNumber",
+      "type": "string"
+    },
+    "ParticipleAgreementPolicy": {
+      "enum": [
+        "invariable",
+        "subject",
+        "verb_specific"
+      ],
+      "title": "ParticipleAgreementPolicy",
+      "type": "string"
+    },
+    "PersonId": {
+      "enum": [
+        "je",
+        "tu",
+        "il",
+        "elle",
+        "on",
+        "nous",
+        "vous",
+        "ils",
+        "elles"
+      ],
+      "title": "PersonId",
+      "type": "string"
+    },
+    "Regularity": {
+      "enum": [
+        "regular",
+        "orthographic_alternation",
+        "irregular"
+      ],
+      "title": "Regularity",
+      "type": "string"
+    },
+    "ReviewStatus": {
+      "enum": [
+        "draft",
+        "candidate",
+        "metadata_reviewed",
+        "forms_reviewed",
+        "approved",
+        "rejected"
+      ],
+      "title": "ReviewStatus",
+      "type": "string"
+    },
+    "SourceEvidence": {
+      "additionalProperties": false,
+      "description": "Evidence that can be audited later; automated scraping is not a method.",
+      "properties": {
+        "source_id": {
+          "pattern": "^[a-z0-9][a-z0-9._:-]*$",
+          "title": "Source Id",
+          "type": "string"
+        },
+        "authority": {
+          "maxLength": 100,
+          "minLength": 2,
+          "title": "Authority",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 250,
+          "minLength": 2,
+          "title": "Label",
+          "type": "string"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "maxLength": 2083,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        },
+        "method": {
+          "$ref": "#/$defs/EvidenceMethod"
+        },
+        "scopes": {
+          "items": {
+            "$ref": "#/$defs/EvidenceScope"
+          },
+          "minItems": 1,
+          "title": "Scopes",
+          "type": "array"
+        },
+        "consulted_on": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Consulted On"
+        },
+        "edition": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Edition"
+        },
+        "dataset_version": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dataset Version"
+        },
+        "license_name": {
+          "anyOf": [
+            {
+              "maxLength": 150,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "License Name"
+        },
+        "license_url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "maxLength": 2083,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "License Url"
+        },
+        "decision_id": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Decision Id"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        }
+      },
+      "required": [
+        "source_id",
+        "authority",
+        "label",
+        "method",
+        "scopes"
+      ],
+      "title": "SourceEvidence",
+      "type": "object"
+    },
+    "Usage": {
+      "enum": [
+        "standard",
+        "courtesy"
+      ],
+      "title": "Usage",
+      "type": "string"
+    },
+    "VerbGroup": {
+      "enum": [
+        "first",
+        "second",
+        "third"
+      ],
+      "title": "VerbGroup",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Canonical source record for one French infinitive/lemma.",
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "verb_id": {
+      "pattern": "^v_[a-z0-9]+(?:_[a-z0-9]+)*$",
+      "title": "Verb Id",
+      "type": "string"
+    },
+    "infinitive": {
+      "maxLength": 100,
+      "minLength": 2,
+      "title": "Infinitive",
+      "type": "string"
+    },
+    "search_aliases": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 20,
+      "title": "Search Aliases",
+      "type": "array"
+    },
+    "group_id": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/VerbGroup"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "family_ids": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 10,
+      "title": "Family Ids",
+      "type": "array"
+    },
+    "pattern_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-z0-9]+(?:[._:-][a-z0-9]+)*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Pattern Id"
+    },
+    "regularity": {
+      "$ref": "#/$defs/Regularity"
+    },
+    "traits": {
+      "items": {
+        "enum": [
+          "impersonal",
+          "defective"
+        ],
+        "type": "string"
+      },
+      "title": "Traits",
+      "type": "array"
+    },
+    "review_status": {
+      "$ref": "#/$defs/ReviewStatus",
+      "default": "draft"
+    },
+    "default_construction_id": {
+      "title": "Default Construction Id",
+      "type": "string"
+    },
+    "constructions": {
+      "items": {
+        "$ref": "#/$defs/ConstructionProfile"
+      },
+      "minItems": 1,
+      "title": "Constructions",
+      "type": "array"
+    },
+    "source_evidence": {
+      "items": {
+        "$ref": "#/$defs/SourceEvidence"
+      },
+      "title": "Source Evidence",
+      "type": "array"
+    },
+    "notes": {
+      "anyOf": [
+        {
+          "maxLength": 2000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Notes"
+    }
+  },
+  "required": [
+    "verb_id",
+    "infinitive",
+    "regularity",
+    "default_construction_id",
+    "constructions"
+  ],
+  "title": "VerbRecord",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

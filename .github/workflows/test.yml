@@ -20,8 +20,10 @@ jobs:
         run: python -m pip install -r backend/requirements-dev.txt
       - name: Run tests
         run: pytest
+      - name: Validate catalog contracts and cross-references
+        run: python scripts/validate_catalog.py
       - name: Compile backend
-        run: python -m compileall -q backend/app
+        run: python -m compileall -q backend/app scripts
 
   static-structure:
     runs-on: ubuntu-latest
@@ -33,10 +35,18 @@ jobs:
           test ! -f frontend/index.html
           test -f frontend/app.js
           test -f frontend/verb-profiles.demo.json
+          test -f data/catalogs/patterns.jsonl
+          test -f data/catalogs/scopes.jsonl
+          test -f scripts/validate_catalog.py
+          test -f scripts/import_candidate_infinitives.py
+          test -f data/catalogs/candidate-infinitive.schema.json
           test -f docs/QUESTIONNAIRE-LINGUISTIQUE.md
           test -f docs/CONTRATS-LINGUISTIQUES.md
           grep -q 'value="participe_present"' frontend/conjugacion.html
           grep -q 'value="gerondif_present"' frontend/conjugacion.html
           test -f backend/app/main.py
+          test -f backend/app/domain/candidate_audit.py
+          test -f scripts/audit_candidate_infinitives.py
+          test -f docs/CANDIDATE-AUDIT-GUIDE.md
           node --check frontend/app.js
           ! grep -R "Educative-Web-Autoaprendizaje" backend frontend data || (echo "Unexpected reference from runtime project folders" && exit 1)

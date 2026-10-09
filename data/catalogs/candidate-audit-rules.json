@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "recognized_infinitive_suffixes": [
+    "er",
+    "ir",
+    "ïr",
+    "re",
+    "oir"
+  ],
+  "equivalent_suffix_classes": {
+    "ir_ending_for_audit": [
+      "ir",
+      "ïr"
+    ]
+  },
+  "group_suffix_exceptions": [
+    {
+      "candidate_form": "aller",
+      "group_id": "third",
+      "accepted_suffixes": [
+        "er"
+      ],
+      "rationale": "Excepción léxica conocida: aller pertenece al tercer grupo aunque termine en -er."
+    }
+  ],
+  "group_expected_suffix_classes": {
+    "first": [
+      "er"
+    ],
+    "second": [
+      "ir_ending_for_audit"
+    ],
+    "third": [
+      "ir_ending_for_audit",
+      "re",
+      "oir"
+    ]
+  }
+}

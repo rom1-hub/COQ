@@ -2,7 +2,7 @@
 
 | ID | Tema | Estado | Decisión/criterio |
 |---|---|---|---|
-| D-001 | Repositorio remoto | Pendiente de crear en GitHub | Proyecto nuevo, sin copiar código, datos ni módulos ejecutables del repositorio anterior. |
+| D-001 | Repositorio remoto | Acordado e inicializado | Repositorio público `rom1-hub/COQ`; proyecto nuevo, sin copiar código, datos ni módulos ejecutables del repositorio anterior. |
 | D-002 | Interfaz | Acordado | HTML/CSS/JavaScript estáticos en `frontend/`. |
 | D-003 | Backend | Acordado | Python + FastAPI + Pydantic. |
 | D-004 | Autoridad lingüística | Acordado | Académie française como fuente principal; registrar evidencias cuando sea posible. |
@@ -14,10 +14,10 @@
 | D-010 | Sujetos y género/número | Acordado | Nueve sujetos; el contexto explícito de género/número se usa en tiempos compuestos; `on`: masculino singular, masculino plural y femenino plural; `vous` admite singular de cortesía y plural. |
 | D-011 | Familias | Acordado | Mantener categorías existentes y añadir otras justificadas por el inventario. |
 | D-012 | Impersonales y defectivos | Acordado | Etiquetar; consulta muestra solo formas existentes y ejercicios filtran conjugaciones realmente disponibles. |
-| D-013 | Almacenamiento | Pendiente técnico | Evaluar JSON y SQLite según necesidades reales del catálogo, trazabilidad y consultas. |
-| D-014 | Fuente de datos | Pendiente técnico | Investigar vías de consulta/verificación de la Académie française; no asumir permiso de importación masiva ni reutilizar el catálogo anterior. |
+| D-013 | Almacenamiento | Acordado como fuente de verdad inicial | JSON Lines (JSONL), un registro por verbo, validado por Pydantic y fácil de revisar en Git. Carga/indexación en memoria al iniciar; SQLite solo si un benchmark con datos reales lo justifica, como índice derivado, nunca como segunda fuente manual. |
+| D-014 | Fuente lingüística y licencia | Académie para verificación puntual; fuente de conjugación de producción pendiente | La Académie française se usa como autoridad de verificación manual con enlaces a cada entrada. No hacer scraping/importación masiva sin autorización. La lista MIT fijada solo aporta nombres candidatos; no formas ni hechos lingüísticos aprobados. La licencia general de COQ y fuente de conjugaciones siguen pendientes. Véase `docs/DATA-SOURCE-AUDIT.md`. |
 | D-015 | Motor de conjugación | Pendiente | No implementar hasta cerrar los contratos lingüísticos y establecer casos de referencia verificados. |
-| D-016 | Publicación frontend | Preparado, no publicado | GitHub Actions publica `frontend/conjugacion.html` y genera `index.html` solo en el artefacto de Pages para redirigir la raíz. |
+| D-016 | Publicación frontend | Publicado | GitHub Actions publica `frontend/conjugacion.html` y genera `index.html` en el artefacto de Pages para redirigir la raíz. La URL pública es `https://rom1-hub.github.io/COQ/conjugacion.html`. |
 | D-017 | Publicación backend | Preparado, no publicado | Render Blueprint; requiere repositorio remoto, cuenta/autoridad de despliegue y configuración de CORS. |
 | D-018 | UI de subjuntivo e imperativo | Acordado | Consulta de subjuntivo muestra la construcción completa (`que je sois`); en ejercicios se escribe solo la forma verbal (`sois`, o `aie mangé` en tiempo compuesto). Incluir impératif pronominal con pronombre enclítico y guion. |
 | D-019 | Corrección escrita | Acordado | Exigir acentos correctos. Normalizar mayúsculas, espacios y apóstrofo recto/tipográfico, sin quitar diacríticos. Las variantes lingüísticas solo se aceptan si están verificadas. |
@@ -33,3 +33,28 @@
 | D-025 | Filtros dependientes de verbo específico | Prototipo limitado | Cuando existe un perfil verificado del catálogo, grupo/familia, construcción y auxiliar se completan y bloquean; el tiempo/forma permanece seleccionable. Hasta que el catálogo/API exista, solo `parler` es un fixture explícito de interfaz, no una fuente lingüística. No deducir perfiles desconocidos. |
 | D-026 | Selector de grupo/familia en práctica | Acordado e implementado en UI | Un único menú, en este orden: Todos los grupos y familias; encabezado Grupos verbales; Primer grupo con Verbos regulares, GER, CER, ELER, ETER, YER y E(É) + consonne + ER; Segundo grupo; Tercer grupo con IR, DRE, AINDRE/EINDRE/OINDRE, UIRE, OIR/OIRE, 100 verbos más comunes (por definir) y otras familias (por definir). Se usarán opciones con prefijo visual para representar subfamilias en el selector nativo. La pertenencia concreta se asigna desde catálogo auditado. |
 | D-027 | Acción «Practicar este verbo» desde consulta | Pendiente expresamente para fase posterior | No implementar aún el botón ni el traspaso desde «Ver conjugación». Cuando se construya, deberá enviar únicamente el verbo consultado y después aplicar el perfil verificado en el formulario independiente de práctica. |
+
+
+| D-028 | Contrato de datos verbales | Definido técnicamente; sin catálogo de producción | Modelos Pydantic separados para lema, construcción, patrón, forma excepcional, disponibilidad, evidencia y scope del selector. Solo registros `approved` pueden alimentar ejercicios; cada forma alternativa debe estar enumerada. |
+| D-029 | Proveniencia de datos | Acordado | Todo registro revisado mantiene URL, autoridad, método y alcance de revisión. No se trata la disponibilidad pública como permiso de redistribución. Se requiere licencia y versión de dataset para los datos de origen externo. |
+| D-030 | Menú grupos/familias/colecciones | Acordado | Grupos y familias morfológicas tienen IDs estables; «100 verbos más comunes» es una colección curada, no una familia. IDs técnicos pasan a `collection:common_100` y `collection:third_group_future_families`; ambas siguen pendientes y no se pueden practicar hasta definir membresía. |
+
+
+| D-031 | Scope de todos los verbos aprobados | Acordado técnicamente | `all:approved_verbs` representa la opción «Todos los grupos y familias» de la UI. Incluye solo verbos aprobados; no es un cuarto grupo gramatical. El endpoint de scopes solo expone entradas `active`. |
+| D-032 | Catálogos de patrones y scopes | Definidos como registros `draft`/`planned` | `data/catalogs/patterns.jsonl` registra 14 patrones iniciales y `scopes.jsonl` 19 opciones. Esta semilla ordena IDs y referencias, pero no acredita formas ni activa ejercicios. `scripts/validate_catalog.py` verifica los enlaces entre registros. |
+| D-033 | Recetas de tiempos compuestos | Acordado | La relación entre tiempo compuesto y tiempo del auxiliar queda definida en `COMPOUND_AUXILIARY_TENSE` en el dominio; el auxiliar AVOIR/ÊTRE se toma del perfil aprobado de la construcción. |
+| D-034 | Contextos para formas compuestas | Acordado técnicamente | Las sobrescrituras y preguntas de tiempos compuestos necesitan persona, género y número explícitos. Para `vous` se distingue singular de cortesía de plural estándar; combinaciones incompatibles se rechazan por Pydantic. |
+| D-035 | Preparación para producción | Pendiente del catálogo | Los contratos API solo emiten perfiles aprobados y scopes activos. La validación del catálogo indica claramente cuando no existe `verbs.jsonl` o aún no hay verbos aprobados; ningún fixture de UI se incorpora automáticamente. |
+
+| D-036 | Inventario auxiliar de lemas | Decidido técnicamente; importación pendiente de ejecutar | `einenlum/french-verbs-list` commit `6fee12e56eb6b5863f3410644b4164491267fb7e`, licencia MIT, solo se usa para crear `candidate-infinitives.jsonl`. El importador verifica los Git blob SHA fijados, conserva el aviso MIT y registra hashes/manifiesto. Cada fila se mantiene `candidate`; sugerencias de grupo no verificadas; no contiene conjugaciones y no habilita consulta ni práctica. |
+| D-037 | Motor/fuente externa de conjugaciones | Sin adoptar; evaluación futura | `mlconjug3` declara MIT para el proyecto, pero sus modelos y recursos de conjugación no se adoptan como fuente de verdad sin verificar su procedencia específica y medir errores contra casos lingüísticos aprobados. Puede evaluarse como comparador offline, nunca como corrector autoritativo. Véase `docs/DATA-SOURCE-AUDIT.md`. |
+
+| D-038 | `s'entrehaïr` — lema, grupo y construcción | Metadatos aprobados por el responsable lingüístico; formas pendientes | Lema técnico canónico `entrehaïr`, forma visible única `s'entrehaïr` (sin guion), segundo grupo y siempre pronominal. `entre-haïr` se conserva únicamente como token de procedencia de la fuente, no como variante visible ni respuesta aceptada. En la auditoría, `-ïr` se trata como `-ir` para reconocer la terminación, sin inferir automáticamente el grupo. No aprobado para producción hasta validar las formas. |
+
+
+| D-039 | Auditoría basada en reglas generales y decisiones declarativas | Acordado | El código del auditor contiene operaciones generales explicables, no condiciones específicas por lema. Expectativas de terminación y excepciones de grupo viven en `candidate-audit-rules.json`; las decisiones lingüísticas individuales se almacenan en `lemma-review-decisions.jsonl` y se aplican mediante el mismo flujo genérico. Cada informe conserva hallazgos originales y los separa de los hallazgos explícitamente resueltos/pendientes. Ninguna decisión de metadatos aprueba conjugaciones ni habilita producción. |
+
+| D-040 | Marcador pronominal explícito en las decisiones de revisión | Acordado | El contrato de decisiones lingüísticas v1.3 exige declarar `pronominal_marker` como `se` o `s'` para construcciones exclusivamente pronominales. No se infiere solo de la primera letra del infinitivo; el tratamiento de `h` requiere metadatos verificados. El lema técnico sigue almacenándose sin pronombre y la forma visible se valida contra el marcador declarado. |
+
+
+| D-041 | Tokens fuente `fiche` y `s'en fiche` | Decisión editorial registrada; conjugaciones pendientes | `fiche` no se incorpora como lema canónico general de COQ y se relaciona con `ficher`; la evidencia de la Académie conserva el matiz de un infinitivo popular/vulgar documentado pero desaconsejado. `s'en fiche` se registra como forma de la construcción `s'en ficher`, no como lema independiente. URLs y afirmaciones quedan en `source_evidence`; estas decisiones no aprueban formas. |

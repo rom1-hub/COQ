@@ -98,8 +98,8 @@ def test_practice_scope_matches_the_approved_group_and_family_hierarchy():
         ('family:indre_aindre_oindre', '— AINDRE, -EINDRE, -OINDRE'),
         ('family:uire', '— UIRE'),
         ('family:oir_oire', '— OIR, -OIRE'),
-        ('family:common_100', '— 100 verbos más comunes (por definir)'),
-        ('family:other_third_group', '— Otras familias (por definir)'),
+        ('collection:common_100', '— 100 verbos más comunes (por definir)'),
+        ('collection:third_group_future_families', '— Otras familias (por definir)'),
     )
     positions = []
     for value, label in expected_options:
