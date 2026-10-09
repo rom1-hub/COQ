@@ -13,6 +13,7 @@
   const summary = document.querySelector("#selection-summary");
   const reset = document.querySelector("#reset-all");
   const verbInput = document.querySelector("#verb-search");
+  const verbHelp = document.querySelector("#verb-help");
   const tenseSelect = document.querySelector("#tense");
   const groupSelect = document.querySelector("#group");
   const familyField = document.querySelector("#family-field");
@@ -98,13 +99,17 @@
       tab.tabIndex = active ? 0 : -1;
     });
     panel.setAttribute("aria-labelledby", mode === "lookup" ? "tab-lookup" : "tab-practice");
+    form.dataset.mode = mode;
+    reset.hidden = mode === "lookup";
 
     if (mode === "lookup") {
-      hint.textContent = "Consulta: introduce un verbo para preparar la búsqueda.";
+      hint.textContent = "Busca un verbo y elige qué tiempos o formas quieres consultar.";
+      verbHelp.textContent = "Introduce el infinitivo francés que quieres consultar.";
       submit.textContent = "Consultar conjugación";
       verbInput.required = true;
     } else {
       hint.textContent = "Práctica: selecciona un verbo, un grupo o una familia. El objetivo previsto es una sesión de 20 preguntas.";
+      verbHelp.textContent = "Puedes elegir un verbo concreto o definir un conjunto con los filtros.";
       submit.textContent = "Preparar práctica";
       verbInput.required = false;
     }
@@ -119,9 +124,15 @@
     const selectedConstruction = String(data.get("construction") || "");
     const selectedAuxiliary = String(data.get("auxiliary") || "");
 
-    return [
+    const commonEntries = [
       ["Verbo", String(data.get("verb") || "").trim() || "No especificado"],
-      ["Tiempo o forma", tenseLabels.get(selectedTense) || "Todos los tiempos y formas"],
+      ["Tiempo o forma", tenseLabels.get(selectedTense) || "Todos los tiempos verbales"],
+    ];
+
+    if (mode === "lookup") return commonEntries;
+
+    return [
+      ...commonEntries,
       ["Grupo", groupLabels.get(selectedGroup) || "Todos los grupos"],
       ...(selectedGroup === "family" ? [["Familia", familyLabels.get(selectedFamily) || "No seleccionada"]] : []),
       ["Construcción", constructionLabels.get(selectedConstruction) || "Todas las construcciones"],
@@ -157,7 +168,7 @@
       return;
     }
 
-    if (groupSelect.value === "family" && !selectedFamily) {
+    if (mode === "practice" && groupSelect.value === "family" && !selectedFamily) {
       showFeedback("Selecciona una familia", "Has elegido el filtro por familia morfológica; selecciona también la familia concreta.", "Revisar datos");
       familySelect.focus();
       return;
@@ -173,7 +184,7 @@
     if (mode === "lookup") {
       showFeedback(
         "Consulta recibida correctamente",
-        `La interfaz ha registrado la consulta de «${verb}» y sus filtros. Todavía no puede mostrar las conjugaciones porque el catálogo de verbos y el motor Python no están implementados. No se han inventado formas verbales.`,
+        `La interfaz ha registrado la consulta de «${verb}» para «${tenseLabels.get(tenseSelect.value) || "Todos los tiempos verbales"}». Todavía no puede mostrar las conjugaciones porque el catálogo de verbos y el motor Python no están implementados. No se han inventado formas verbales.`,
         "Consulta",
         entries,
       );

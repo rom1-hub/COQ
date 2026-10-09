@@ -55,3 +55,19 @@ def test_all_primary_actions_have_event_handlers():
         'reset.addEventListener("click"',
     ):
         assert expected in script
+
+
+def test_lookup_mode_only_displays_verb_and_tense_controls():
+    frontend = ROOT / "frontend"
+    html = (frontend / "conjugacion.html").read_text(encoding="utf-8")
+    script = (frontend / "app.js").read_text(encoding="utf-8")
+    css = (frontend / "styles.css").read_text(encoding="utf-8")
+
+    assert 'option value="">Todos los tiempos verbales</option>' in html
+    assert 'value="imperatif_present">Impératif</option>' in html
+    assert html.count('class="field filter-practice-only"') == 3
+    assert 'class="field field-full filter-practice-only"' in html
+    assert '#search-form[data-mode="lookup"] .filter-practice-only' in css
+    assert 'form.dataset.mode = mode;' in script
+    assert 'reset.hidden = mode === "lookup";' in script
+    assert 'if (mode === "practice" && groupSelect.value === "family" && !selectedFamily)' in script

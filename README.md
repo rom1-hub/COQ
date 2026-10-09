@@ -6,7 +6,9 @@ Proyecto nuevo e independiente para una plataforma de francés. La primera secci
 
 - [x] Estructura base independiente para COQ.
 - [x] Prototipo interactivo de la sección de conjugación en `frontend/conjugacion.html`.
-- [x] Modos «Ver conjugación» y «Practicar», filtros, reinicio y formas *participe présent* y *gérondif présent*.
+- [x] «Ver conjugación»: solo búsqueda por infinitivo y selector de tiempo o forma verbal.
+- [x] «Practicar»: filtros de grupo/familia, construcción y auxiliar, con reinicio.
+- [x] Formas *participe présent* y *gérondif présent* en consulta y práctica.
 - [x] API mínima FastAPI con comprobación de estado.
 - [x] Contratos lingüísticos y registro de decisiones.
 - [x] Pruebas automatizadas y workflow de publicación.
@@ -46,7 +48,8 @@ Para ejecutar la API en otra ventana de PowerShell:
 ```powershell
 py -m venv .venv
 .\.venv\Scripts\Activate.ps1
-py -m pip install -r backendequirements-dev.txt
+py -m pip install -r backend
+equirements-dev.txt
 $env:PYTHONPATH = "backend"
 uvicorn app.main:app --app-dir backend --reload
 ```

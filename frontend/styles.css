@@ -93,3 +93,11 @@ input:invalid, select:invalid { box-shadow:none; }
   .selection-summary { grid-template-columns:1fr; gap:3px; }
   .selection-summary dd { margin-bottom:8px; }
 }
+
+/* En consulta se muestran solo el verbo y el tiempo; los otros filtros son exclusivos de práctica. */
+#search-form[data-mode="lookup"] .filter-practice-only { display: none !important; }
+#search-form[data-mode="lookup"] .filters-grid {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 600px;
+}
+#search-form[data-mode="lookup"] .field-wide { margin-bottom: 18px; }

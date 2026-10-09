@@ -25,3 +25,5 @@
 | D-021 | Deuxième / troisième groupe | Acordado como método de clasificación | Verificar cada verbo con la Académie française; usar `-ir` + participe présent en `-issant` como indicador del deuxième groupe y revisar el patrón de `nous` en `-issons`. Mantener una lista auditada de verbos en `-ir` del troisième groupe. |
 
 | D-022 | Formas no personales | Acordado | Añadir `participe présent` y `gérondif présent` tanto a «Ver conjugación» como a los ejercicios. No cuentan como tiempos adicionales. Consulta: `parlant` y `en parlant`; ejercicio: escribir `parlant` para participe présent y `en parlant` completo para gérondif. No incluir gérondif passé por ahora. Referencia: Académie française, artículos «Participe» y «Gérondif». |
+
+| D-023 | Controles de consulta frente a práctica | Acordado | «Ver conjugación» solo muestra la búsqueda del infinitivo y el selector de tiempo/forma verbal («Todos los tiempos verbales», 11 tiempos/modos y `participe présent`/`gérondif présent`). Los filtros de grupo/familia, construcción y auxiliar solo aparecen en «Practicar». El botón de reinicio también queda reservado para el modo de práctica. |
