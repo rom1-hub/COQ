@@ -166,6 +166,7 @@ def write_inventory(
     candidates_path.write_text(
         "".join(record.model_dump_json(exclude_none=True) + "\n" for record in records),
         encoding="utf-8",
+        newline="\n",
     )
     license_bytes = license_text.encode("utf-8")
     license_path.write_bytes(license_bytes)

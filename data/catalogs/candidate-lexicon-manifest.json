@@ -12,7 +12,7 @@
   "source_json_git_blob_sha": "b36b7c1dee4d93e9589701dfbb5d5319618d71f2",
   "license_git_blob_sha": "f53ad6d11f70631cdeaeffc3685d47634c3c23cd",
   "candidate_output": "candidate-infinitives.jsonl",
-  "candidate_output_sha256": "b2ce21d73bb4c5075fa36d1b643abb8ea13138275262f722dbc4b667930e41c8",
+  "candidate_output_sha256": "b8d8c35c57aa51b6ab261c7c6b097c796e711119c88e7afba1de6844488c1456",
   "source_note": "The upstream README describes this list as a work in progress. It is used only as a candidate inventory; no source group suggestion or conjugation form is approved by importing it.",
   "raw_entry_counts_by_source_group": {
     "first_group": 6381,
