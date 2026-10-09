@@ -1,6 +1,6 @@
 # Contrato de API — COQ
 
-**Versión propuesta:** `/api/v1`. **Estado:** los modelos Pydantic están definidos; por ahora solo está implementado `GET /api/v1/health`. Las rutas funcionales descritas abajo no deben presentarse como operativas hasta que se implementen y pasen pruebas de integración.
+**Versión propuesta:** `/api/v1`. **Estado:** están implementados `GET /api/v1/health` y una primera versión de `GET /api/v1/verbs/{verb_id}/conjugation`. La ruta de conjugación solo opera cuando existen un verbo, una construcción y un patrón aprobados en los catálogos JSONL. Los demás endpoints siguen siendo propuestas que deben implementarse y pasar pruebas de integración.
 
 Los modelos de petición/respuesta viven en `backend/app/api/contracts.py`; los modelos de datos del catálogo están en `backend/app/domain/verb_contracts.py`.
 
@@ -18,9 +18,22 @@ Los modelos de petición/respuesta viven en `backend/app/api/contracts.py`; los 
 
 ### `GET /api/v1/health`
 
-Devuelve el estado técnico y declara explícitamente si los contratos lingüísticos y el motor están disponibles. No implica que la conjugación real funcione.
+Devuelve el estado técnico, la disponibilidad del motor y si existe al menos un par verbo/patrón aprobado en el catálogo de producción. `production_catalog_ready=false` significa que las rutas dependientes de datos aprobados deben rechazar la consulta, no generar formas a partir de fixtures.
 
-## 3. Endpoints funcionales propuestos
+### `GET /api/v1/verbs/{verb_id}/conjugation` (primera versión implementada)
+
+Acepta `form_id` como parámetro repetible y `construction_id` como parámetro opcional. Si se omite
+`form_id`, intenta devolver las formas seleccionables que el motor puede generar para la construcción
+aprobada. La respuesta contiene las formas preferidas y variantes revisadas, sin añadir el sujeto ni
+`que` en el subjonctif; el gérondif sí incluye `en`.
+
+La ruta no consume `frontend/verb-profiles.demo.json`, ni la lista de candidatos. Si `verbs.jsonl`
+no existe, está vacío, o no contiene ningún verbo con construcción y patrón aprobados, responde
+HTTP 503 con `ApiErrorCode.CATALOG_NOT_READY`. No se han aprobado verbos para producción todavía,
+por lo que esta ruta está integrada pero debe permanecer no disponible hasta completar la revisión
+del catálogo.
+
+## 3. Especificación ampliada y endpoints funcionales aún propuestos
 
 ### `GET /api/v1/catalog/scopes`
 
@@ -42,7 +55,7 @@ Devuelve el perfil aprobado necesario para los filtros de «Practicar»: grupo, 
 
 Respuesta: `VerbProfileResponse`. La interfaz bloquea grupo/familia, construcción y auxiliar a partir de este perfil y deja editable el tiempo/forma. El perfil de demostración `parler` en el frontend no es respuesta de producción.
 
-### `GET /api/v1/verbs/{verb_id}/conjugation`
+### Contrato ampliado de `GET /api/v1/verbs/{verb_id}/conjugation`
 
 Parámetros:
 

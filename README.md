@@ -23,10 +23,12 @@ Proyecto nuevo e independiente para una plataforma de francés. La primera secci
 - [ ] Decidir la licencia general de COQ y la fuente licenciada de conjugaciones para producción.
 - [ ] Construir el catálogo canónico `verbs.jsonl` con metadatos, formas y evidencias revisadas.
 - [ ] Catálogo verbal auditado y validado.
-- [ ] Motor de conjugación Python.
+- [x] Motor inicial Python para el patrón regular -ER, con pruebas; las demás familias siguen pendientes.
+- [x] Endpoint inicial de consulta conectado al motor; bloqueado hasta aprobar el catálogo de producción.
+- [ ] Completar el motor para las familias y alternancias restantes.
 - [ ] Integración entre interfaz y API.
 
-**Límite actual:** los controles de la interfaz funcionan, pero todavía no se calculan conjugaciones ni se generan o corrigen ejercicios. El motor y el catálogo validado son la siguiente fase.
+**Límite actual:** el frontend sigue siendo un prototipo y aún no llama a la API. La ruta inicial de consulta está implementada, pero responde que el catálogo no está listo hasta que existan datos aprobados. La generación/corrección de ejercicios y el soporte de las demás familias verbales siguen pendientes.
 
 ## Estructura
 

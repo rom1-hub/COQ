@@ -1,19 +1,21 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
+from app.api.conjugation import router as conjugation_router
+from app.api.errors import ApiProblem
 from app.api.health import router as health_router
 
 app = FastAPI(
     title="COQ API",
     description=(
-        "API del proyecto nuevo de conjugación. El motor lingüístico y los "
-        "endpoints de conjugación permanecerán ausentes hasta aprobar los contratos."
+        "API de COQ. La consulta de conjugación solo expone formas de verbos, "
+        "patrones y construcciones aprobados en el catálogo de producción."
     ),
-    version="0.1.0",
+    version="0.2.0",
 )
 
-# Production origins must be set from deployment configuration before API integration.
-# During the local prototype phase, the allowlist is intentionally minimal.
+# Production origins must be set from deployment configuration before deployment.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -27,4 +29,14 @@ app.add_middleware(
     allow_headers=["Content-Type", "Authorization"],
 )
 
+
+@app.exception_handler(ApiProblem)
+async def api_problem_handler(_: Request, exc: ApiProblem) -> JSONResponse:
+    return JSONResponse(
+        status_code=exc.status_code,
+        content=exc.response.model_dump(mode="json"),
+    )
+
+
 app.include_router(health_router, prefix="/api/v1")
+app.include_router(conjugation_router, prefix="/api/v1")
