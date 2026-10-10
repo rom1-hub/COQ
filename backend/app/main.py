@@ -5,6 +5,7 @@ from fastapi.responses import JSONResponse
 from app.api.conjugation import router as conjugation_router
 from app.api.errors import ApiProblem
 from app.api.health import router as health_router
+from app.api.verb_search import router as verb_search_router
 
 app = FastAPI(
     title="COQ API",
@@ -39,4 +40,5 @@ async def api_problem_handler(_: Request, exc: ApiProblem) -> JSONResponse:
 
 
 app.include_router(health_router, prefix="/api/v1")
+app.include_router(verb_search_router, prefix="/api/v1")
 app.include_router(conjugation_router, prefix="/api/v1")

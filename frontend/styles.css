@@ -103,3 +103,21 @@ input:invalid, select:invalid { box-shadow:none; }
 select:disabled { background: #f2f5f7; color: #526776; }
 #practice-form .form-footer { justify-content: flex-start; flex-wrap: wrap; }
 #practice-form .helper-text { flex: 1 1 100%; max-width: none; }
+
+
+/* Renderizado de tablas de conjugación recibidas del modo de prueba local. */
+.local-api-test-banner { margin: 12px 0 0; color: #80551b; font-size: 12px; }
+.conjugation-results { display: grid; gap: 18px; margin-top: 18px; }
+.conjugation-result { min-width: 0; padding-top: 14px; border-top: 1px solid var(--line); }
+.conjugation-result h3 { margin: 0 0 10px; font-size: 15px; }
+.conjugation-table-scroll { max-width: 100%; overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: white; }
+.conjugation-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.conjugation-table th, .conjugation-table td { padding: 9px 11px; border-bottom: 1px solid #e8eef2; text-align: left; vertical-align: top; }
+.conjugation-table th { background: #edf5f8; color: #365365; font-size: 11px; font-weight: 800; }
+.conjugation-table tbody tr:last-child td { border-bottom: 0; }
+.conjugation-table td:last-child { font-weight: 650; white-space: nowrap; }
+.conjugation-context { display: block; margin-top: 2px; color: var(--muted); font-size: 10px; font-weight: 400; white-space: normal; }
+@media (max-width: 650px) {
+  .conjugation-table th, .conjugation-table td { padding: 8px; }
+  .conjugation-table td:last-child { white-space: normal; }
+}
